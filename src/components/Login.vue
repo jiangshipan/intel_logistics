@@ -38,7 +38,7 @@
           } else {
             //跳转到主页面
             alert('登陆成功')
-            // this.$router.push({ path: '/student' })
+            this.$router.push({ path: '/' })
           }
         })
         .catch(error => {

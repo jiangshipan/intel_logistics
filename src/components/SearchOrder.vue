@@ -80,4 +80,11 @@ export default {
 .order_number_input {
   width: 300px
 }
+.search_order {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  width: 800px;
+}
 </style>

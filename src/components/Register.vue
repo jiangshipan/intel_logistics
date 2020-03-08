@@ -2,8 +2,9 @@
   <div class="register-container">
     <div class="register">
       <el-input v-model="username" placeholder="请输入用户名"/>
-      <el-input v-model="real_name" placeholder="请输入真实姓名"/>
       <el-input v-model="password" placeholder="请输入密码" show-password/>
+      <el-input v-model="real_name" placeholder="请输入真实姓名"/>
+      <el-input v-model="telephone" placeholder="请输入联系电话"/>
       <el-button id="reg_button" type="primary" @click="reg()">立即注册</el-button>
     </div>
   </div>
@@ -20,6 +21,7 @@
         username: '',
         real_name: '',
         password: '',
+        telephone: '',
         reg_url: base_url + 'user/reg',
       }
     },
@@ -30,7 +32,7 @@
           this.errorMsg("必填字段不能为空")
           return
         }
-        var data = {username: this.username, password: this.password, real_name: this.real_name}
+        var data = {username: this.username, password: this.password, real_name: this.real_name, telephone: this.telephone}
         axios.post(this.reg_url, data, {headers: {'Content-Type': 'application/json'}})
         .then(response => {
           if (response.data.code != 0) {

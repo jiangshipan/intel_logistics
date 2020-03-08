@@ -6,15 +6,14 @@
         <el-link @click="redirect_check()">查快递</el-link>
         <el-dropdown trigger="click" class="user-side">
           <span class="el-dropdown-link">
-            你好, {{username}}<i class="el-icon-arrow-down el-icon--right"></i>
+            你好, {{real_name}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="changePassword()">修改密码</el-dropdown-item>
               <el-dropdown-item @click.native="doOption('确认退出吗?')">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>          
       </el-header>
-      <el-container v-if="identity_type == 1">
+      <el-container v-if="identity_type == '0'">
         <el-aside width="200px">
           <el-menu
             default-active="1"
@@ -24,23 +23,29 @@
             active-text-color="#ffd04b">
             <el-menu-item index="1">
               <i class="el-icon-user"></i>
-              <router-link tag="span" slot="title" to="/student">学生列表</router-link>
+              <router-link tag="span" slot="title" to="/customer">用户管理</router-link>
             </el-menu-item>
             <el-menu-item index="2">
-              <i class="el-icon-user-solid"></i>
-              <router-link tag="span" slot="title" to="/manage_class">班级管理</router-link>
+              <i class="el-icon-s-check"></i>
+              <router-link tag="span" slot="title" to="/employee">员工管理</router-link>
             </el-menu-item>
             <el-menu-item index="3">
-              <i class="el-icon-notebook-2"></i>
-              <router-link tag="span" slot="title" to="/record">签到记录</router-link>
+              <i class="el-icon-s-order"></i>
+              <router-link tag="span" slot="title" to="/order">订单管理</router-link>
+            </el-menu-item>
+            <el-menu-item index="4">
+              <i class="el-icon-s-promotion"></i>
+              <router-link tag="span" slot="title" to="/logistics">物流管理</router-link>
             </el-menu-item>
           </el-menu>
         </el-aside>
-
         <el-main>
           <router-view/>
         </el-main>
       </el-container>
+      <div class="customer_div" v-if="identity_type != '0'">
+          <h1>欢迎来到,智慧物流!</h1>
+      </div>
     </el-container>
   </div>
 </template>
@@ -54,8 +59,8 @@
     data() {
       return {
         user_id: '',
-        username: '请登录',
-        identity_type: 1,
+        real_name: '',
+        identity_type: '',
         get_user_url: base_url + 'user/get',
         logout_url: base_url + 'user/logout'
       }
@@ -70,9 +75,11 @@
             var res = response.data;
             if (res.code == 0) {
               this.user_id = res.data.id;
-              this.username = res.data.username;
+              this.real_name = res.data.real_name;
+              this.identity_type = res.data.identity_type;
             } else {
-              this.errorMsg(res.msg)
+              this.errorMsg("你好, 请登录")
+              this.$router.push({ path: '/login' })
             }
         })
         .catch(error => {
@@ -97,7 +104,7 @@
         this.$router.push({ path: '/order/send'})
       },
       redirect_check() {
-        this.$router.push({ path: '/order/send'})
+        this.$router.push({ path: '/order/search'})
       },
       doOption(msg, id, status) {
         this.$confirm(msg, '提示', {
@@ -156,6 +163,11 @@
   .el-link1 {
     padding-left: 30px;
     padding-right: 30px;
+  }
+  .customer_div {
+      width: 100%;
+      height: 100%;
+      background-color: beige
   }
 
 
